@@ -66,7 +66,8 @@ def check_dist(X):
 def calc_diff(arr):
     res = []
     for i in range(len(arr) - 1):
-        res += [arr[i + 1] - arr[i]]
+        # res += [round((arr[i + 1] - arr[i])*10000)/10000]
+        res += [arr[i+1]-arr[i]]
     return res
 
 
@@ -77,8 +78,8 @@ def newton(x):
     for i in range(len(Y) - 1):
         tmp = calc_diff(tmp)
         dy_n += [tmp]
-
     left = 0
+    # print(dy_n)
     for i in range(len(X) - 1):
         if X[i] <= x < X[i + 1]:
             left = i
@@ -87,11 +88,14 @@ def newton(x):
         left = len(X)-1
 
     if x - X[0] <= X[-1] - x:
-        t = (x - X[left]) / h
+        t0 = (x - X[left]) / h
+        # t0 = 0.5
+        t = t0
+        # print(t)
         summ = Y[left]
-        for i in range(1, len(X) - left - 1):
+        for i in range(1, len(X) - left):
             summ += t * dy_n[i][left] / math.factorial(i)
-            t *= (t - i)
+            t *= (t0 - i)
 
     else:
 
@@ -133,8 +137,8 @@ if __name__ == '__main__':
         with open('input.txt', 'r') as file:
             for line in file:
 
-                X += [int(line.split()[0])]
-                Y += [int(line.split()[1])]
+                X += [float(line.split()[0])]
+                Y += [float(line.split()[1])]
     elif c == 2:
         X, Y = equation()
         print(X)
@@ -158,7 +162,7 @@ if __name__ == '__main__':
             print(res)
 
         elif c == 2:
-            if check_dist(X):
+            if True:
                 res = newton(x)
                 print_graph(newton, [x, res])
 
@@ -167,3 +171,7 @@ if __name__ == '__main__':
                 print("Узлы не равноудалены!")
     else:
         print("Промежуток неверен")
+
+    # 0,035
+    # 1,78
+    # -0.0025
